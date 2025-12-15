@@ -1,17 +1,16 @@
 package NeoSoft;
 
 import io.appium.java_client.AppiumBy;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
 
-public class AppiumBasis extends BaseClass {
+public class TC001_SetWiFiName extends BaseClass {
 
     @Test
-    public void TC001_SetWiFiName() {
+    public void SetWiFiName() {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
