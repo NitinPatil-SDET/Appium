@@ -1,9 +1,13 @@
 package NeoSoft; // <-- change to match your project folder
 
+import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
@@ -42,6 +46,16 @@ public class BaseClass {
 
         // Create driver — use URL directly
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+    }
+
+
+
+
+    public void longClickGesture(WebElement element){
+        ((JavascriptExecutor) driver).executeScript("mobile: longClickGesture", ImmutableMap.of(
+                "elementId", ((RemoteWebElement) element).getId()
+        ));
     }
 
     @AfterClass
