@@ -1,4 +1,4 @@
-package NeoSoft;
+package AppiumAdvanceGesture;
 
 import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.AppiumBy;

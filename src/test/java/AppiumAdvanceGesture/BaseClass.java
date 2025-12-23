@@ -1,4 +1,4 @@
-package NeoSoft; // <-- change to match your project folder
+package AppiumAdvanceGesture; // <-- change to match your project folder
 
 import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.android.AndroidDriver;

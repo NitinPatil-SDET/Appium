@@ -1,19 +1,17 @@
-package NeoSoft;
+package AppiumAdvanceGesture;
 
 import io.appium.java_client.AppiumBy;
-import org.openqa.selenium.DeviceRotation;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.Test;
-
-
 
 import java.time.Duration;
 
-public class TC007_DeviceRotation extends BaseClass {
+public class TC008_ClipboardAction extends BaseClass {
 
     @Test
-    public void verifyDeviceRotationDuringInteraction() {
+    public void verifyClipboardUsageForTextInput() {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
@@ -31,27 +29,14 @@ public class TC007_DeviceRotation extends BaseClass {
            ========================================================= */
         wait.until(
                 ExpectedConditions.elementToBeClickable(
-                        AppiumBy.xpath("//android.widget.TextView[@content-desc='3. Preference dependencies']")
+                        AppiumBy.xpath(
+                                "//android.widget.TextView[@content-desc='3. Preference dependencies']"
+                        )
                 )
         ).click();
 
         /* =========================================================
-           DEVICE ROTATION: PORTRAIT → LANDSCAPE
-           ---------------------------------------------------------
-           - Uses DeviceRotation (angle-based rotation)
-           - Rotates the device along Z-axis by 90 degrees
-           - Simulates real user rotating the phone
-
-           Axes meaning:
-           X-axis → forward/back tilt (not used here)
-           Y-axis → left/right tilt (not used here)
-           Z-axis → screen rotation (MOST IMPORTANT)
-           ========================================================= */
-        DeviceRotation landscape = new DeviceRotation(0, 0, 90);
-        driver.rotate(landscape);
-
-        /* =========================================================
-           STEP 3: Enable WiFi checkbox in landscape mode
+           STEP 3: Enable WiFi checkbox
            ========================================================= */
         wait.until(
                 ExpectedConditions.elementToBeClickable(
@@ -71,15 +56,39 @@ public class TC007_DeviceRotation extends BaseClass {
         ).click();
 
         /* =========================================================
-           STEP 5: Enter WiFi name
+           CLIPBOARD ACTION – SET TEXT
            ---------------------------------------------------------
-           - Verifies that input works correctly after rotation
+           - Places text directly into the device clipboard
+           - Faster and more reliable than typing long strings
+           - Very useful for copy/paste and share validations
            ========================================================= */
+        String wifiName = "Nitin SDET";
+        driver.setClipboardText(wifiName);
+
+        /* =========================================================
+           STEP 5: Paste text from clipboard into input field
+           ---------------------------------------------------------
+           - Reads clipboard content using getClipboardText()
+           - Avoids flaky sendKeys with long or special text
+           ========================================================= */
+        String clipboardText = driver.getClipboardText();
+
         wait.until(
                 ExpectedConditions.visibilityOfElementLocated(
                         AppiumBy.id("android:id/edit")
                 )
-        ).sendKeys("Test123");
+        ).sendKeys(clipboardText);
+
+        /* =========================================================
+           OPTIONAL VALIDATION
+           ---------------------------------------------------------
+           - Ensures clipboard text was correctly read
+           ========================================================= */
+        Assert.assertEquals(
+                clipboardText,
+                wifiName,
+                "Clipboard text does not match expected value"
+        );
 
         /* =========================================================
            STEP 6: Confirm WiFi settings
@@ -89,14 +98,5 @@ public class TC007_DeviceRotation extends BaseClass {
                         AppiumBy.id("android:id/button1")
                 )
         ).click();
-
-        /* =========================================================
-           DEVICE ROTATION: LANDSCAPE → PORTRAIT
-           ---------------------------------------------------------
-           - Restores the device to its original orientation
-           - Good practice to reset state after test execution
-           ========================================================= */
-        DeviceRotation portrait = new DeviceRotation(0, 0, 0);
-        driver.rotate(portrait);
     }
 }
